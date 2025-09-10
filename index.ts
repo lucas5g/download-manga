@@ -57,11 +57,11 @@ async function downloadImages(urls: string[], chapter: string) {
 
 }
 
-async function createEpub(anime: string, chapter: string) {
+async function createEpub(anime: string) {
 
 
   const command = `
-    cd images/${chapter} &&\
+    cd images/${anime} &&\
     mogrify -quality 52 *.jpg &&\
     img2pdf *.jpg -o ${anime}.pdf &&\
     ebook-convert ${anime}.pdf ${anime}.epub --cover 00.jpg 
@@ -71,24 +71,18 @@ async function createEpub(anime: string, chapter: string) {
 
 }
 
-async function main() {
+export async function create(url: string, name: string) {
 
-  const name = 'kaiju-n-8-1'
-  const page = 'https://www.kaijuchapters.com/manga/jujutsu-kaisen-chapter-1-2/'
+  // const name = 'kaiju-n-8-1'
+  // const page = 'https://www.kaijuchapters.com/manga/jujutsu-kaisen-chapter-1-2/'
 
   await createFolderImage(name)
 
-  const urlImages = await getUrlImages(page)
+  const urlImages = await getUrlImages(url)
 
   await loopDownload(urlImages, name)
 
   await createEpub(name)
-
-  console.log('end')
-
-
 }
 
 
-main();
-// loadImages()
